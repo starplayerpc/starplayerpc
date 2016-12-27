@@ -1,2 +1,2 @@
 # reVIEW
-LUA extension to allow repeat-by-track option in VLC playlists
+A LUA extension to give users a repeat-by-track capability in VLC playlists.
