@@ -1,0 +1,184 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>reVIEW documentation &#8212; reVIEW  documentation</title>
+    
+    <link rel="stylesheet" href="_static/sphinxdoc.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true,
+        SOURCELINK_SUFFIX: '.txt'
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" /> 
+  </head>
+  <body role="document">
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">reVIEW  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+  <h3><a href="#">Table Of Contents</a></h3>
+  <ul>
+<li><a class="reference internal" href="#">reVIEW documentation</a></li>
+<li><a class="reference internal" href="#requirements">Requirements</a></li>
+<li><a class="reference internal" href="#possible-future-extensions">Possible future extensions</a></li>
+<li><a class="reference internal" href="#solution">Solution</a></li>
+<li><a class="reference internal" href="#approach">Approach</a></li>
+<li><a class="reference internal" href="#related-solutions">Related solutions</a></li>
+<li><a class="reference internal" href="#developing-with-vlc">Developing with VLC</a><ul>
+<li><a class="reference internal" href="#api">API</a></li>
+<li><a class="reference internal" href="#similar-capabilities">Similar capabilities</a></li>
+</ul>
+</li>
+<li><a class="reference internal" href="#references">References</a></li>
+</ul>
+
+  <div role="note" aria-label="source link">
+    <h3>This Page</h3>
+    <ul class="this-page-menu">
+      <li><a href="_sources/index.rst.txt"
+            rel="nofollow">Show Source</a></li>
+    </ul>
+   </div>
+<div id="searchbox" style="display: none" role="search">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <div><input type="text" name="q" /></div>
+      <div><input type="submit" value="Go" /></div>
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body" role="main">
+            
+  <div class="section" id="review-documentation">
+<h1>reVIEW documentation<a class="headerlink" href="#review-documentation" title="Permalink to this headline">¶</a></h1>
+<p>A LUA extension to give users a repeat-by-track capability in VLC playlists.</p>
+<div class="toctree-wrapper compound">
+</div>
+</div>
+<div class="section" id="requirements">
+<h1>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>A capability for playing a series of video clips in a playlist whilst specifying which clips should loop/repeat forever (until the user selects forward or back) and which clips should play once before automatically advancing to the next clip.</li>
+</ul>
+</div>
+<div class="section" id="possible-future-extensions">
+<h1>Possible future extensions<a class="headerlink" href="#possible-future-extensions" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Repeat N times</li>
+<li>Optionally specify start and stop (A-B) points in clip</li>
+</ul>
+</div>
+<div class="section" id="solution">
+<h1>Solution<a class="headerlink" href="#solution" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>Extend the popular VLC open source video play to accept playlists with loop information</li>
+<li>VLC is licensed under GPV v2 or above, this solution will use the compatible LGPL v2+ licence</li>
+</ul>
+</div>
+<div class="section" id="approach">
+<h1>Approach<a class="headerlink" href="#approach" title="Permalink to this headline">¶</a></h1>
+<ol class="arabic simple">
+<li>Create a playlist script to read and process a text file as a playlist. The extra information on whether to <cite>repeat</cite> or <cite>continue</cite> each track should be stored in the playlist track metadata. See main VLC <a class="reference external" href="https://www.videolan.org/developers/vlc/share/lua/README.txt">README.txt</a> and specifically <cite>playlist.add</cite> in that page for the format of the playlist table that should be returned.</li>
+<li>Create an extension that toggles the playlist mode depending on the metadata for each track.</li>
+<li>Find <a class="reference external" href="https://wiki.videolan.org/VLC_command-line_help/">command line options</a> to start VLC full screen, with extension enabled and running the required playlist. See <cite>&#8211;play-and-exit</cite>, but provide a couple of black screen looping videos (or still images) so that the player does not return to the machine desktop during a live broadcast. Consider special key to exit (disabling usual prev/next to prevent accidental exit during live broadcast)?</li>
+<li>Extend (3) to provide a Lua interface to select the playlist to run</li>
+<li>Create a playlist creater to allow users to easily select video clips and repeat behaviour. Consider implementing as a Lua interface script.</li>
+<li>Consider using <a class="reference external" href="https://wiki.videolan.org/LibVLC">libVLC</a> and building a custom application using <a class="reference external" href="https://github.com/vlc-qt/vlc-qt">Qt</a>. See <a class="reference external" href="http://stackoverflow.com/questions/39333563/building-a-playlist-to-control-playback-options-for-each-media-file-individually">controlling playback options</a></li>
+<li>Further customisation, see: supress_video_title_filename.png</li>
+</ol>
+</div>
+<div class="section" id="related-solutions">
+<h1>Related solutions<a class="headerlink" href="#related-solutions" title="Permalink to this headline">¶</a></h1>
+<p>See all <cite>extensions &lt;https://addons.videolan.org/browse/cat/323/&gt;</cite>._</p>
+<p><a class="reference external" href="https://addons.videolan.org/p/1154018/">VLC Song Tracker</a> is very promising, at the beginning of each track it records to file the date and time the song was played. This is exactly the point we need to control looping.</p>
+<p><a class="reference external" href="https://addons.videolan.org/p/1154095/">Song Teacher</a> is a complicated extension that loads a playlist and then reorders it based on how well you don&#8217;t know the songs. Interaction is via a GUI.</p>
+</div>
+<div class="section" id="developing-with-vlc">
+<h1>Developing with VLC<a class="headerlink" href="#developing-with-vlc" title="Permalink to this headline">¶</a></h1>
+<p>Tools &gt; Messages - increase Verbosity to 2 (debug) and view messages in the Messages window. In older versions of VLC, messages were written to <cite>vlc-log.txt</cite>.</p>
+<div class="section" id="api">
+<h2>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h2>
+<p>See the main VLC readme for working with LUA: <a class="reference external" href="https://www.videolan.org/developers/vlc/share/lua/README.txt">README.txt</a>.</p>
+<ul class="simple">
+<li><cite>playlist.repeat_( [status] )</cite>: Toggle item repeat or set to specified value.</li>
+<li><cite>video.fullscreen( [status] )</cite>:</li>
+</ul>
+<blockquote>
+<div><ul class="simple">
+<li>toggle fullscreen if no arguments are given</li>
+<li>switch to fullscreen 1st argument is true</li>
+<li>disable fullscreen if 1st argument is false</li>
+</ul>
+</div></blockquote>
+</div>
+<div class="section" id="similar-capabilities">
+<h2>Similar capabilities<a class="headerlink" href="#similar-capabilities" title="Permalink to this headline">¶</a></h2>
+<p>See <a class="reference external" href="https://addons.videolan.org">Addons</a> for extensions with similar capabilities. e.g.:</p>
+<ul class="simple">
+<li><a class="reference external" href="https://addons.videolan.org/p/1154032/">Time</a> - displays run time on the screen during playback (we also want to take actions during playback). This extension also has a UI.</li>
+</ul>
+</div>
+</div>
+<div class="section" id="references">
+<h1>References<a class="headerlink" href="#references" title="Permalink to this headline">¶</a></h1>
+<ul class="simple">
+<li>The main VLC readme for working with LUA: <a class="reference external" href="https://www.videolan.org/developers/vlc/share/lua/README.txt">README.txt</a>.</li>
+<li><a class="reference external" href="https://wiki.videolan.org/Documentation:Advanced_Use_of_VLC/#Playlist_options">Advanced use of VLC</a></li>
+<li>Lua 5.1 <a class="reference external" href="http://www.lua.org/manual/5.1/">Reference manual</a></li>
+<li>Forum advice on <a class="reference external" href="https://forum.videolan.org/viewtopic.php?t=98644">getting started</a></li>
+<li>Blogs on extending VLC with Lua: <a class="reference external" href="http://www.coderholic.com/extending-vlc-with-lua/">Coderholic</a>, <a class="reference external" href="http://scientificswede.blogspot.co.uk/2012/05/extending-vlc-with-lua.html">Scientific Swede</a></li>
+</ul>
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related" role="navigation" aria-label="related navigation">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="nav-item nav-item-0"><a href="#">reVIEW  documentation</a> &#187;</li> 
+      </ul>
+    </div>
+    <div class="footer" role="contentinfo">
+        &#169; Copyright 2016.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.5.1.
+    </div>
+  </body>
+</html>
