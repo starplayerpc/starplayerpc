@@ -55,22 +55,22 @@ function update_playback_mode()
       local meta = item:metas()
       --Check Meta tags
       if meta then
-        local playback_mode = meta["Playback mode"]
-        if playback_mode == nil then
-          playback_mode = false
-        elseif string.lower(mode) == "repeat" then
-		  playback_mode = true
+        local repeat_track = meta["Playback mode"]
+        if repeat_track == nil then
+          repeat_track = false
+        elseif string.lower(repeat_track) == "repeat" then
+		  repeat_track = true
 		else
-		  playback_mode = false
+		  repeat_track = false
 		end
 				
 		-- 'repeat_' (expects string, but does not respond to "repeat"/"repeat_one") therefore toggle instead.
 		local player_mode = vlc.playlist.repeat_()
 		
-		if player_mode and not playback_mode then
+		if player_mode and not repeat_track then
 			vlc.msg.dbg("[VLC Track Repeat] "..item:uri()..": continue")
 			vlc.playlist.repeat_()
-		elseif not player_mode and playback_mode then
+		elseif not player_mode and repeat_track then
 			vlc.msg.dbg("[VLC Track Repeat] "..item:uri()..": repeat")
 			vlc.playlist.repeat_()
 		end

@@ -3,20 +3,20 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-reVIEW documentation
-====================
-
-A LUA extension to give users a repeat-by-track capability in VLC playlists.
-
 .. toctree::
    :maxdepth: 2
    :caption: Contents:
+
+   development
+   tidyup
+   playlisteditor
 
 
 Requirements
 ============
 
 * A capability for playing a series of video clips in a playlist whilst specifying which clips should loop/repeat forever (until the user selects forward or back) and which clips should play once before automatically advancing to the next clip.
+
 
 Possible future extensions
 ==========================
@@ -33,63 +33,13 @@ Solution
 Approach
 ========
 
-1. Create a playlist script to read and process a text file as a playlist. The extra information on whether to `repeat` or `continue` each track should be stored in the playlist track metadata. See main VLC `README.txt`_ and specifically `playlist.add` in that page for the format of the playlist table that should be returned.
+1. Create a playlist script to read and process a text file as a playlist. The extra information on whether to `repeat` or `continue` each track should be stored in the playlist track metadata.
 
 2. Create an extension that toggles the playlist mode depending on the metadata for each track.
 
 3. Find `command line options <https://wiki.videolan.org/VLC_command-line_help/>`_ to start VLC full screen, with extension enabled and running the required playlist. See `--play-and-exit`, but provide a couple of black screen looping videos (or still images) so that the player does not return to the machine desktop during a live broadcast. Consider special key to exit (disabling usual prev/next to prevent accidental exit during live broadcast)?
 
-4. Extend (3) to provide a Lua interface to select the playlist to run
+4. Create a playlist creater to allow users to easily select video clips and repeat behaviour. Consider implementing as a Lua interface script.
 
-5. Create a playlist creater to allow users to easily select video clips and repeat behaviour. Consider implementing as a Lua interface script.
+5. Further customisation, see: supress_video_title_filename.png
 
-6. Consider using `libVLC <https://wiki.videolan.org/LibVLC>`_ and building a custom application using `Qt <https://github.com/vlc-qt/vlc-qt>`_. See `controlling playback options <http://stackoverflow.com/questions/39333563/building-a-playlist-to-control-playback-options-for-each-media-file-individually>`_
-
-7. Further customisation, see: supress_video_title_filename.png
-
-Related solutions
-=================
-
-See all `extensions <https://addons.videolan.org/browse/cat/323/>`._
-
-`VLC Song Tracker <https://addons.videolan.org/p/1154018/>`_ is very promising, at the beginning of each track it records to file the date and time the song was played. This is exactly the point we need to control looping.
-
-`Song Teacher <https://addons.videolan.org/p/1154095/>`_ is a complicated extension that loads a playlist and then reorders it based on how well you don't know the songs. Interaction is via a GUI.
-
-
-Developing with VLC
-===================
-
-Tools > Messages - increase Verbosity to 2 (debug) and view messages in the Messages window. In older versions of VLC, messages were written to `vlc-log.txt`.
-
-API
----
-See the main VLC readme for working with LUA: `README.txt`_.
-
-
-* `playlist.repeat_( [status] )`: Toggle item repeat or set to specified value.
-
-* `video.fullscreen( [status] )`:
-
- * toggle fullscreen if no arguments are given
- * switch to fullscreen 1st argument is true
- * disable fullscreen if 1st argument is false
-
-
-Similar capabilities
---------------------
-See `Addons <https://addons.videolan.org>`_ for extensions with similar capabilities. e.g.:
-
-* `Time <https://addons.videolan.org/p/1154032/>`_ - displays run time on the screen during playback (we also want to take actions during playback). This extension also has a UI.
-
-References
-==========
-
-* The main VLC readme for working with LUA: `README.txt`_.
-* `Advanced use of VLC <https://wiki.videolan.org/Documentation:Advanced_Use_of_VLC/#Playlist_options>`_
-* Lua 5.1 `Reference manual <http://www.lua.org/manual/5.1/>`_
-* Forum advice on `getting started <https://forum.videolan.org/viewtopic.php?t=98644>`_
-* Blogs on extending VLC with Lua: `Coderholic <http://www.coderholic.com/extending-vlc-with-lua/>`_, `Scientific Swede <http://scientificswede.blogspot.co.uk/2012/05/extending-vlc-with-lua.html>`_
-
-
-.. _README.txt: https://www.videolan.org/developers/vlc/share/lua/README.txt
