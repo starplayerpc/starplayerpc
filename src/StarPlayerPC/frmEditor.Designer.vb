@@ -35,7 +35,7 @@ Partial Class frmEditor
         Me.mnuHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpProvider1 = New System.Windows.Forms.HelpProvider()
-        Me.grdPlaylist = New PlayListEditor.Playlist()
+        Me.grdPlaylist = New StarPlayerPC.Playlist()
         Me.TrackFilename = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TrackRepeat = New System.Windows.Forms.DataGridViewCheckBoxColumn()
         Me.mnuMenuStrip.SuspendLayout()
