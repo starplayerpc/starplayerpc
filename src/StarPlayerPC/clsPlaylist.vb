@@ -13,7 +13,9 @@
 ' You should have received a copy of the GNU General Public License
 ' along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
+Imports System.ComponentModel
 Imports System.Runtime.InteropServices
+
 
 Public Class PlaylistItem
     Public Property Filename As String
@@ -49,7 +51,7 @@ Public Class Playlist
         dlgFileOpen.DefaultExt = My.Settings.playlistExtension
         dlgFileOpen.FileName = ""
         dlgFileOpen.Filter = My.Settings.playlistName & "|*" & My.Settings.playlistExtension
-        dlgFileOpen.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString()
+        dlgFileOpen.RestoreDirectory = True
 
         result = dlgFileOpen.ShowDialog()
         If result = True And dlgFileOpen.FileName <> "" Then
@@ -78,6 +80,7 @@ Public Class Playlist
                     End If
                     Dim item As New PlaylistItem
                     item.Filename = currentRow(0).Replace("file:///", "").Replace("/", "\")
+                    item.Filename = item.Filename.Replace("%20", " ")
                     item.Repeat = currentRow(1) = "repeat"
                     items.Add(item)
                 Catch ex As FileIO.MalformedLineException
@@ -103,20 +106,23 @@ Public Class Playlist
     ''' <summary>
     ''' Shows a file save dialog to select and save the current playlist to a file
     ''' </summary>
-    Public Sub SavePlaylist()
+    Public Function SavePlaylist()
         Dim dlgFileSave As New SaveFileDialog()
         Dim result As Boolean
 
         dlgFileSave.DefaultExt = My.Settings.playlistExtension
         dlgFileSave.FileName = ""
         dlgFileSave.Filter = My.Settings.playlistName & "|*" & My.Settings.playlistExtension
-        dlgFileSave.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString()
+        dlgFileSave.RestoreDirectory = True
 
         result = dlgFileSave.ShowDialog()
         If result = True And dlgFileSave.FileName <> "" Then
             SavePlaylist(dlgFileSave.FileName)
+            Return dlgFileSave.FileName
+        Else
+            Return ""
         End If
-    End Sub
+    End Function
 
     ''' <summary>
     ''' Saves the current playlist given in the specified filename
@@ -136,14 +142,17 @@ Public Class Playlist
                         playmode = "continue"
                     End If
                     filepath = row.Cells(0).Value.replace("\", "/")
+                    filepath = filepath.Replace(" ", "%20")
                     file.WriteLine("file:///" & filepath & My.Settings.playlistSeperator & playmode)
                 End If
             Next
         End Using
+    End Sub
 
-        '--fullscreen 
-        Dim args = "--no-qt-updates-notif --no-osd -q --no-qt-fs-controller --key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
-        Dim pi As New ProcessStartInfo(My.Settings.vlcPath, args & filename)
+    Public Sub BeginPlayback(filename As String)
+        ' fullscreen is provided by sending the 'f' key later (cannot enable 
+        Dim args = "--aspect-ratio=16:9 --no-qt-updates-notif --no-osd -q --no-qt-fs-controller --key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
+        Dim pi As New ProcessStartInfo(My.Settings.vlcPath, args & """" & filename & """")
         'pi.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System)
 
         Using vlc As New Process
@@ -152,10 +161,9 @@ Public Class Playlist
             SetForegroundWindow(vlc.MainWindowHandle)
             vlc.WaitForInputIdle()
             System.Threading.Thread.Sleep(500)
-            ' Send Alt-i, up, enter, f (enable extension then fullscreen)
+            ' Send Alt-i, up, enter, f (enable extension then go fullscreen, cannot enable extension once fullscreen)
             My.Computer.Keyboard.SendKeys("%i{UP}~f")
         End Using
-
     End Sub
 
     <DllImport("user32.dll")>
@@ -171,10 +179,9 @@ Public Class Playlist
         Dim result As Boolean
 
         Dim dlgPlaylistChooseFile As New OpenFileDialog()
-        dlgPlaylistChooseFile.DefaultExt = ".mp4"
-        dlgPlaylistChooseFile.Filter = "All files|*.*|Advanced Systems Format|*.asf|Advanced Video Codec High Definition|*.avchd|Audio Video Interleave|*.avi|Flash video|*.flv|MPEG4|*.mp4|QuickTime|*.mov|Windows Media Video|*.wmv|Raw video format|*.yuv"
-        dlgPlaylistChooseFile.FilterIndex = 6
-        dlgPlaylistChooseFile.InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop).ToString()
+        dlgPlaylistChooseFile.Filter = "All files|*.*|All video files|*.asf;*.avchd;*.avi;*.flv;*.mp4;*.mov;*.wmv;*.yuv|Advanced Systems Format|*.asf|Advanced Video Codec High Definition|*.avchd|Audio Video Interleave|*.avi|Flash video|*.flv|MPEG4|*.mp4|QuickTime|*.mov|Windows Media Video|*.wmv|Raw video format|*.yuv"
+        dlgPlaylistChooseFile.FilterIndex = 2
+        dlgPlaylistChooseFile.RestoreDirectory = True
 
         If e.ColumnIndex = 0 Then
             dlgPlaylistChooseFile.FileName = ""
@@ -187,9 +194,6 @@ Public Class Playlist
                     NotifyCurrentCellDirty(True)
                     NotifyCurrentCellDirty(False)
                 End If
-            Else
-                ' Consider deleting the row here?
-                Rows(e.RowIndex).Cells(e.ColumnIndex).Value = ""
             End If
         End If
     End Sub

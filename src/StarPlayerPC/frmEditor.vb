@@ -27,12 +27,20 @@ Public Class frmEditor
         grdPlaylist.OpenPlaylist()
     End Sub
 
-    Private Sub mnuFileSave_Click(sender As Object, e As EventArgs) Handles mnuFileSave.Click
+    Private Sub mnuFileSaveAs_Click(sender As Object, e As EventArgs) Handles mnuFileSaveAs.Click
         grdPlaylist.SavePlaylist()
     End Sub
 
     Private Sub mnuFileExit_Click(sender As Object, e As EventArgs) Handles mnuFileExit.Click
         End
+    End Sub
+
+    Private Sub SaveAndPlaybackToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles SaveAndPlaybackToolStripMenuItem.Click
+        Dim filename As String
+        filename = grdPlaylist.SavePlaylist()
+        If filename <> "" Then
+            grdPlaylist.BeginPlayback(filename)
+        End If
     End Sub
 
     Private Sub mnuSettingsPreferences_Click(sender As Object, e As EventArgs) Handles mnuSettingsPreferences.Click
@@ -46,6 +54,5 @@ Public Class frmEditor
     Private Sub mnuHelpContents_Click(sender As Object, e As EventArgs) Handles mnuHelpContents.Click
         Help.ShowHelp(Me, HelpProvider1.HelpNamespace, HelpNavigator.TableOfContents)
     End Sub
-
 End Class
 

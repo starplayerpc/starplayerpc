@@ -27,7 +27,7 @@ Partial Class frmEditor
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileNew = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileOpen = New System.Windows.Forms.ToolStripMenuItem()
-        Me.mnuFileSave = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuFileSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileExit = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSettingsPreferences = New System.Windows.Forms.ToolStripMenuItem()
@@ -35,6 +35,8 @@ Partial Class frmEditor
         Me.mnuHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpProvider1 = New System.Windows.Forms.HelpProvider()
+        Me.VideoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveAndPlaybackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.grdPlaylist = New StarPlayerPC.Playlist()
         Me.TrackFilename = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TrackRepeat = New System.Windows.Forms.DataGridViewCheckBoxColumn()
@@ -44,7 +46,7 @@ Partial Class frmEditor
         '
         'mnuMenuStrip
         '
-        Me.mnuMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.HelpToolStripMenuItem})
+        Me.mnuMenuStrip.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem, Me.VideoToolStripMenuItem, Me.SettingsToolStripMenuItem, Me.HelpToolStripMenuItem})
         Me.mnuMenuStrip.Location = New System.Drawing.Point(0, 0)
         Me.mnuMenuStrip.Name = "mnuMenuStrip"
         Me.mnuMenuStrip.Size = New System.Drawing.Size(721, 24)
@@ -53,7 +55,7 @@ Partial Class frmEditor
         '
         'FileToolStripMenuItem
         '
-        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFileNew, Me.mnuFileOpen, Me.mnuFileSave, Me.mnuFileExit})
+        Me.FileToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuFileNew, Me.mnuFileOpen, Me.mnuFileSaveAs, Me.mnuFileExit})
         Me.FileToolStripMenuItem.Name = "FileToolStripMenuItem"
         Me.FileToolStripMenuItem.Size = New System.Drawing.Size(37, 20)
         Me.FileToolStripMenuItem.Text = "File"
@@ -61,25 +63,25 @@ Partial Class frmEditor
         'mnuFileNew
         '
         Me.mnuFileNew.Name = "mnuFileNew"
-        Me.mnuFileNew.Size = New System.Drawing.Size(103, 22)
+        Me.mnuFileNew.Size = New System.Drawing.Size(152, 22)
         Me.mnuFileNew.Text = "New"
         '
         'mnuFileOpen
         '
         Me.mnuFileOpen.Name = "mnuFileOpen"
-        Me.mnuFileOpen.Size = New System.Drawing.Size(103, 22)
+        Me.mnuFileOpen.Size = New System.Drawing.Size(152, 22)
         Me.mnuFileOpen.Text = "Open"
         '
-        'mnuFileSave
+        'mnuFileSaveAs
         '
-        Me.mnuFileSave.Name = "mnuFileSave"
-        Me.mnuFileSave.Size = New System.Drawing.Size(103, 22)
-        Me.mnuFileSave.Text = "Save"
+        Me.mnuFileSaveAs.Name = "mnuFileSaveAs"
+        Me.mnuFileSaveAs.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFileSaveAs.Text = "Save As"
         '
         'mnuFileExit
         '
         Me.mnuFileExit.Name = "mnuFileExit"
-        Me.mnuFileExit.Size = New System.Drawing.Size(103, 22)
+        Me.mnuFileExit.Size = New System.Drawing.Size(152, 22)
         Me.mnuFileExit.Text = "Exit"
         '
         'SettingsToolStripMenuItem
@@ -106,18 +108,31 @@ Partial Class frmEditor
         'mnuHelpAbout
         '
         Me.mnuHelpAbout.Name = "mnuHelpAbout"
-        Me.mnuHelpAbout.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHelpAbout.Size = New System.Drawing.Size(122, 22)
         Me.mnuHelpAbout.Text = "About"
         '
         'mnuHelpContents
         '
         Me.mnuHelpContents.Name = "mnuHelpContents"
-        Me.mnuHelpContents.Size = New System.Drawing.Size(152, 22)
+        Me.mnuHelpContents.Size = New System.Drawing.Size(122, 22)
         Me.mnuHelpContents.Text = "Contents"
         '
         'HelpProvider1
         '
         Me.HelpProvider1.HelpNamespace = "StarPlayerPC.chm"
+        '
+        'VideoToolStripMenuItem
+        '
+        Me.VideoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveAndPlaybackToolStripMenuItem})
+        Me.VideoToolStripMenuItem.Name = "VideoToolStripMenuItem"
+        Me.VideoToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
+        Me.VideoToolStripMenuItem.Text = "Video"
+        '
+        'SaveAndPlaybackToolStripMenuItem
+        '
+        Me.SaveAndPlaybackToolStripMenuItem.Name = "SaveAndPlaybackToolStripMenuItem"
+        Me.SaveAndPlaybackToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SaveAndPlaybackToolStripMenuItem.Text = "Save and Playback"
         '
         'grdPlaylist
         '
@@ -152,8 +167,8 @@ Partial Class frmEditor
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.ClientSize = New System.Drawing.Size(721, 387)
-        Controls.Add(grdPlaylist)
-        Me.Controls.Add(mnuMenuStrip)
+        Me.Controls.Add(Me.grdPlaylist)
+        Me.Controls.Add(Me.mnuMenuStrip)
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.mnuMenuStrip
         Me.MinimumSize = New System.Drawing.Size(410, 220)
@@ -169,7 +184,7 @@ Partial Class frmEditor
     Friend WithEvents mnuMenuStrip As MenuStrip
     Friend WithEvents FileToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents mnuFileOpen As ToolStripMenuItem
-    Friend WithEvents mnuFileSave As ToolStripMenuItem
+    Friend WithEvents mnuFileSaveAs As ToolStripMenuItem
     Friend WithEvents mnuFileExit As ToolStripMenuItem
     Friend WithEvents mnuFileNew As ToolStripMenuItem
     Friend WithEvents HelpToolStripMenuItem As ToolStripMenuItem
@@ -181,4 +196,6 @@ Partial Class frmEditor
     Friend WithEvents TrackFilename As DataGridViewTextBoxColumn
     Friend WithEvents TrackRepeat As DataGridViewCheckBoxColumn
     Friend WithEvents HelpProvider1 As HelpProvider
+    Friend WithEvents VideoToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents SaveAndPlaybackToolStripMenuItem As ToolStripMenuItem
 End Class
