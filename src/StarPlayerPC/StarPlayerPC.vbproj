@@ -171,9 +171,6 @@
       <SubType>Designer</SubType>
     </None>
     <Content Include="icon.ico" />
-    <Content Include="StarPlayerPC.chm">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </Content>
   </ItemGroup>
   <ItemGroup>
     <BootstrapperPackage Include=".NETFramework,Version=v4.6">
