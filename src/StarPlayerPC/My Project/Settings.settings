@@ -12,7 +12,7 @@
       <Value Profile="(Default)">|</Value>
     </Setting>
     <Setting Name="vlcPath" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">C:\Program Files (x86)\VideoLAN\VLC\vlc.exe</Value>
+      <Value Profile="(Default)">C:\Program Files (x86)\VideoLAN\VLC\vlc.exe|C:\Program Files\VideoLAN\VLC\vlc.exe</Value>
     </Setting>
   </Settings>
 </SettingsFile>

@@ -48,6 +48,7 @@ Public Class frmEditor
     End Sub
 
     Private Sub mnuHelpAbout_Click(sender As Object, e As EventArgs) Handles mnuHelpAbout.Click
+        frmSplash.ControlBox = True
         frmSplash.Show()
     End Sub
 

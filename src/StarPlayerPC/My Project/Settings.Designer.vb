@@ -83,7 +83,8 @@ Namespace My
         
         <Global.System.Configuration.ApplicationScopedSettingAttribute(),  _
          Global.System.Diagnostics.DebuggerNonUserCodeAttribute(),  _
-         Global.System.Configuration.DefaultSettingValueAttribute("C:\Program Files (x86)\VideoLAN\VLC\vlc.exe")>  _
+         Global.System.Configuration.DefaultSettingValueAttribute("C:\Program Files (x86)\VideoLAN\VLC\vlc.exe|C:\Program Files\VideoLAN\VLC\vlc.exe"& _ 
+            "")>  _
         Public ReadOnly Property vlcPath() As String
             Get
                 Return CType(Me("vlcPath"),String)

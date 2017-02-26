@@ -6,11 +6,11 @@ function parse()
     playlist = {}
 
 	playlist_item = {}
-	playlist_item.path = "file:///C:/Program Files (x86)/StarPlayerPC/sppc.bin"
+	playlist_item.path = "file:///C:/Program%20Files%20(x86)/StarPlayerPC/sppmain.png"
 	playlist_item.meta = { ["Playback mode"] = "repeat" }
 	table.insert( playlist, playlist_item )
 	playlist_item = {}
-	playlist_item.path = "file:///C:/Program Files (x86)/StarPlayerPC/sppcb.bin"
+	playlist_item.path = "file:///C:/Program%20Files%20(x86)/StarPlayerPC/sppblck.png"
 	playlist_item.meta = { ["Playback mode"] = "repeat" }
 	table.insert( playlist, playlist_item )	
 	
@@ -41,7 +41,7 @@ function parse()
     end
 
 	playlist_item = {}
-	playlist_item.path = "file:///C:/Program Files (x86)/StarPlayerPC/sppcb.bin"
+	playlist_item.path = "file:///C:/Program%20Files%20(x86)/StarPlayerPC/sppblck.png"
 	playlist_item.meta = { ["Playback mode"] = "repeat" }
 	table.insert( playlist, playlist_item )	
 	

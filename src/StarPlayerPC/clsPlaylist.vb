@@ -152,18 +152,25 @@ Public Class Playlist
     Public Sub BeginPlayback(filename As String)
         ' fullscreen is provided by sending the 'f' key later (cannot enable 
         Dim args = "--aspect-ratio=16:9 --no-qt-updates-notif --no-osd -q --no-qt-fs-controller --key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
-        Dim pi As New ProcessStartInfo(My.Settings.vlcPath, args & """" & filename & """")
-        'pi.WorkingDirectory = Environment.GetFolderPath(Environment.SpecialFolder.System)
 
-        Using vlc As New Process
-            vlc.StartInfo = pi
-            vlc.Start()
-            SetForegroundWindow(vlc.MainWindowHandle)
-            vlc.WaitForInputIdle()
-            System.Threading.Thread.Sleep(500)
-            ' Send Alt-i, up, enter, f (enable extension then go fullscreen, cannot enable extension once fullscreen)
-            My.Computer.Keyboard.SendKeys("%i{UP}~f")
-        End Using
+        For Each vlcpath As String In Split(My.Settings.vlcPath, "|")
+            Try
+                Dim pi As New ProcessStartInfo(vlcpath, args & """" & filename & """")
+                Using vlc As New Process
+                    vlc.StartInfo = pi
+                    vlc.Start()
+                    SetForegroundWindow(vlc.MainWindowHandle)
+                    vlc.WaitForInputIdle()
+                    System.Threading.Thread.Sleep(500)
+                    ' Send Alt-i, up, enter, f (enable extension then go fullscreen, cannot enable extension once fullscreen)
+                    My.Computer.Keyboard.SendKeys("%i{UP}~f")
+                End Using
+                Exit For
+            Catch ex As Exception
+                ' Continue around loop
+            End Try
+        Next
+
     End Sub
 
     <DllImport("user32.dll")>
