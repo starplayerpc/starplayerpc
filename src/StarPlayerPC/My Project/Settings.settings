@@ -6,7 +6,7 @@
       <Value Profile="(Default)">StarPlayerPC™ playlist</Value>
     </Setting>
     <Setting Name="playlistExtension" Type="System.String" Scope="Application">
-      <Value Profile="(Default)">.spp</Value>
+      <Value Profile="(Default)">.sppc</Value>
     </Setting>
     <Setting Name="playlistSeperator" Type="System.String" Scope="Application">
       <Value Profile="(Default)">|</Value>

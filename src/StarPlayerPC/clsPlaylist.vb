@@ -19,12 +19,15 @@ Imports System.Runtime.InteropServices
 
 Public Class PlaylistItem
     Public Property Filename As String
+    Public Property StartTime As String
+    Public Property EndTime As String
     Public Property Repeat As Boolean
 End Class
 
 
 Public Class Playlist
     Inherits DataGridViewDragDrop
+    Public Property ContextMenuRowIndex As Integer = 0
 
     ''' <summary>
     ''' Clears the contents of the playlist
@@ -38,7 +41,14 @@ Public Class Playlist
     ''' </summary>
     ''' <param name="item"></param>
     Public Sub AddItemToPlaylist(item As PlaylistItem)
-        Rows.Add(item.Filename, item.Repeat)
+        Dim rowIndex = Rows.Add(item.Filename, item.StartTime, item.EndTime, item.Repeat)
+        ' Check filename exists, if not then color the text red
+        If Not My.Computer.FileSystem.FileExists(item.Filename) Then
+            Rows.Item(rowIndex).DefaultCellStyle.ForeColor = Color.Red
+            Rows.Item(rowIndex).DefaultCellStyle.SelectionBackColor = Color.Red
+            Rows.Item(rowIndex).DefaultCellStyle.SelectionForeColor = Color.White
+        End If
+
     End Sub
 
     ''' <summary>
@@ -74,14 +84,16 @@ Public Class Playlist
             While Not reader.EndOfData
                 Try
                     currentRow = reader.ReadFields()
-                    If currentRow.Length <> 2 Then
+                    If currentRow.Length <> 4 Then
                         MsgBox("Invalid playlist file")
                         Exit While
                     End If
                     Dim item As New PlaylistItem
                     item.Filename = currentRow(0).Replace("file:///", "").Replace("/", "\")
                     item.Filename = item.Filename.Replace("%20", " ")
-                    item.Repeat = currentRow(1) = "repeat"
+                    item.StartTime = currentRow(1)
+                    item.EndTime = currentRow(2)
+                    item.Repeat = currentRow(3) = "repeat"
                     items.Add(item)
                 Catch ex As FileIO.MalformedLineException
                     MsgBox("Invalid playlist file")
@@ -130,28 +142,56 @@ Public Class Playlist
     ''' <param name="filename"></param>
     Public Sub SavePlaylist(filename As String)
         Dim filepath As String
+        Dim startTime As String
+        Dim endTime As String
         Dim playmode As String
+        Dim sep As String = My.Settings.playlistSeperator
         Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
 
         Using file As New IO.StreamWriter(filename, False, utf8WithoutBom)
             For Each row As DataGridViewRow In Rows
                 If row.Cells(0).Value <> "" Then
-                    If CBool(row.Cells(1).EditedFormattedValue) Then
+                    startTime = row.Cells(1).EditedFormattedValue
+                    endTime = row.Cells(2).EditedFormattedValue
+                    If CBool(row.Cells(3).EditedFormattedValue) Then
                         playmode = "repeat"
                     Else
                         playmode = "continue"
                     End If
                     filepath = row.Cells(0).Value.replace("\", "/")
                     filepath = filepath.Replace(" ", "%20")
-                    file.WriteLine("file:///" & filepath & My.Settings.playlistSeperator & playmode)
+                    file.WriteLine("file:///" & filepath & sep & startTime & sep & endTime & sep & playmode)
                 End If
             Next
         End Using
     End Sub
 
     Public Sub BeginPlayback(filename As String)
-        ' fullscreen is provided by sending the 'f' key later (cannot enable 
-        Dim args = "--aspect-ratio=16:9 --no-qt-updates-notif --no-osd -q --no-qt-fs-controller --key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
+        Dim args As String
+        Dim keySequences() As String
+        ' We use sendkeys to enable the StarPlayerPC VLC Lua extension once VLC has started.
+        ' There is no direct key combination to enable a custom extension, so we ensure that
+        ' our extension will be the final item on the View menu (by using the filename
+        ' ~starplayerpc.lua) and send the keys Alt-i, Up, Enter.
+        ' We send Enter first (and delay) to clear any initially notification that may remain
+        ' and also give time for the StarPlayerPC extention to be loaded into the view menu.
+        ' To begin playback we need to play twice (the first time enters the playlist, and
+        ' the second begins playing the playlist). The VLC key to play does not expand the
+        ' playlist, therefore we send ' ' (space) twice and hope the user has not reassigned
+        ' this key. Before space works, we need to tab to give the playlist panel the focus.
+        ' Finally we send 'f' to enter fullscreen.
+        keySequences = {"~", "%i{UP}~{TAB}", " ", " ", "f"}
+
+        ' Extensions cannot be enabled during playback, therefore we lauch VLC with --no-playlist-autostart.
+        ' We set our own keys for Next and Back (and change Esc from exiting fullscreen to exiting VLC).
+        ' Note that fullscreen can still be toggled using the 'f' key, even though Esc no longer leaves fullscreen.
+        ' We also set the the toggle fullscreen key to the VLC default (f) to ensure that our sendkeys works correctly
+        ' and set the mouse hide timeout to 0 ms to ensure the mouse pointer is not shown during playback
+        ' Finally we set aspect ratio to the required 16:9, disable onscreen notifications and turn off messages (-q)
+        args = "--no-playlist-autostart "
+        args &= "--key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
+        args &= "--key-toggle-fullscreen f --mouse-hide-timeout=0 "
+        args &= "--aspect-ratio=16:9 --qt-notification=0 --no-qt-bgcone --no-qt-updates-notif --no-osd --no-qt-fs-controller -q "
 
         For Each vlcpath As String In Split(My.Settings.vlcPath, "|")
             Try
@@ -161,9 +201,10 @@ Public Class Playlist
                     vlc.Start()
                     SetForegroundWindow(vlc.MainWindowHandle)
                     vlc.WaitForInputIdle()
-                    System.Threading.Thread.Sleep(500)
-                    ' Send Alt-i, up, enter, f (enable extension then go fullscreen, cannot enable extension once fullscreen)
-                    My.Computer.Keyboard.SendKeys("%i{UP}~f")
+                    For Each keys In keySequences
+                        System.Threading.Thread.Sleep(500)
+                        SendKeys.SendWait(keys)
+                    Next
                 End Using
                 Exit For
             Catch ex As Exception
@@ -178,10 +219,10 @@ Public Class Playlist
     End Function
 
     ''' <summary>
-    ''' Displays an open file dialog to choose the media file associated with this playlist item
+    ''' Displays an open file dialog to choose the media file associated with the current playlist item/row
     ''' </summary>
-    ''' <param name="e"></param>
-    Private Sub ChoosePlaylistItem(ByVal e As DataGridViewCellEventArgs)
+    ''' <param name="rowIndex"></param>
+    Public Sub ChoosePlaylistItem(rowIndex As Integer)
         Dim filename As String
         Dim result As Boolean
 
@@ -190,23 +231,17 @@ Public Class Playlist
         dlgPlaylistChooseFile.FilterIndex = 2
         dlgPlaylistChooseFile.RestoreDirectory = True
 
-        If e.ColumnIndex = 0 Then
-            dlgPlaylistChooseFile.FileName = ""
-            result = dlgPlaylistChooseFile.ShowDialog()
-            If result = True And dlgPlaylistChooseFile.FileName <> "" Then
-                filename = dlgPlaylistChooseFile.FileName
-                Rows(e.RowIndex).Cells(e.ColumnIndex).Value = filename
-                If e.RowIndex + 1 = RowCount Then
-                    ' Notifying that the current cell contains data causes a new empty row to be added below
-                    NotifyCurrentCellDirty(True)
-                    NotifyCurrentCellDirty(False)
-                End If
+        dlgPlaylistChooseFile.FileName = ""
+        result = dlgPlaylistChooseFile.ShowDialog()
+        If result = True And dlgPlaylistChooseFile.FileName <> "" Then
+            filename = dlgPlaylistChooseFile.FileName
+            Rows(rowIndex).Cells(0).Value = filename
+            If rowIndex + 1 = RowCount Then
+                ' Notifying that the current cell contains data causes a new empty row to be added below
+                NotifyCurrentCellDirty(True)
+                NotifyCurrentCellDirty(False)
             End If
         End If
-    End Sub
-
-    Private Sub Playlist_CellClick(ByVal sender As Object, ByVal e As DataGridViewCellEventArgs) Handles Me.CellClick
-        ChoosePlaylistItem(e)
     End Sub
 
 End Class

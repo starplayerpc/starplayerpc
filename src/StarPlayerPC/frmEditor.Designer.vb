@@ -22,6 +22,7 @@ Partial Class frmEditor
     'Do not modify it using the code editor.
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
+        Me.components = New System.ComponentModel.Container()
         Dim resources As System.ComponentModel.ComponentResourceManager = New System.ComponentModel.ComponentResourceManager(GetType(frmEditor))
         Me.mnuMenuStrip = New System.Windows.Forms.MenuStrip()
         Me.FileToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
@@ -29,19 +30,28 @@ Partial Class frmEditor
         Me.mnuFileOpen = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileSaveAs = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuFileExit = New System.Windows.Forms.ToolStripMenuItem()
+        Me.VideoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.SaveAndPlaybackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SettingsToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuSettingsPreferences = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelpAbout = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuHelpContents = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpProvider1 = New System.Windows.Forms.HelpProvider()
-        Me.VideoToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
-        Me.SaveAndPlaybackToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.grdPlaylist = New StarPlayerPC.Playlist()
         Me.TrackFilename = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TrackStart = New System.Windows.Forms.DataGridViewTextBoxColumn()
+        Me.TrackEnd = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.TrackRepeat = New System.Windows.Forms.DataGridViewCheckBoxColumn()
+        Me.mnuCellContext = New System.Windows.Forms.ContextMenuStrip(Me.components)
+        Me.mnuChooseVideo = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuRemoveRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertNewRow = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertRowAbove = New System.Windows.Forms.ToolStripMenuItem()
+        Me.mnuInsertRowBelow = New System.Windows.Forms.ToolStripMenuItem()
         Me.mnuMenuStrip.SuspendLayout()
         CType(Me.grdPlaylist, System.ComponentModel.ISupportInitialize).BeginInit()
+        Me.mnuCellContext.SuspendLayout()
         Me.SuspendLayout()
         '
         'mnuMenuStrip
@@ -63,26 +73,39 @@ Partial Class frmEditor
         'mnuFileNew
         '
         Me.mnuFileNew.Name = "mnuFileNew"
-        Me.mnuFileNew.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFileNew.Size = New System.Drawing.Size(114, 22)
         Me.mnuFileNew.Text = "New"
         '
         'mnuFileOpen
         '
         Me.mnuFileOpen.Name = "mnuFileOpen"
-        Me.mnuFileOpen.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFileOpen.Size = New System.Drawing.Size(114, 22)
         Me.mnuFileOpen.Text = "Open"
         '
         'mnuFileSaveAs
         '
         Me.mnuFileSaveAs.Name = "mnuFileSaveAs"
-        Me.mnuFileSaveAs.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFileSaveAs.Size = New System.Drawing.Size(114, 22)
         Me.mnuFileSaveAs.Text = "Save As"
         '
         'mnuFileExit
         '
         Me.mnuFileExit.Name = "mnuFileExit"
-        Me.mnuFileExit.Size = New System.Drawing.Size(152, 22)
+        Me.mnuFileExit.Size = New System.Drawing.Size(114, 22)
         Me.mnuFileExit.Text = "Exit"
+        '
+        'VideoToolStripMenuItem
+        '
+        Me.VideoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveAndPlaybackToolStripMenuItem})
+        Me.VideoToolStripMenuItem.Name = "VideoToolStripMenuItem"
+        Me.VideoToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
+        Me.VideoToolStripMenuItem.Text = "Video"
+        '
+        'SaveAndPlaybackToolStripMenuItem
+        '
+        Me.SaveAndPlaybackToolStripMenuItem.Name = "SaveAndPlaybackToolStripMenuItem"
+        Me.SaveAndPlaybackToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
+        Me.SaveAndPlaybackToolStripMenuItem.Text = "Save and Playback"
         '
         'SettingsToolStripMenuItem
         '
@@ -108,38 +131,27 @@ Partial Class frmEditor
         'mnuHelpAbout
         '
         Me.mnuHelpAbout.Name = "mnuHelpAbout"
-        Me.mnuHelpAbout.Size = New System.Drawing.Size(122, 22)
+        Me.mnuHelpAbout.Size = New System.Drawing.Size(152, 22)
         Me.mnuHelpAbout.Text = "About"
         '
         'mnuHelpContents
         '
         Me.mnuHelpContents.Name = "mnuHelpContents"
-        Me.mnuHelpContents.Size = New System.Drawing.Size(122, 22)
+        Me.mnuHelpContents.Size = New System.Drawing.Size(152, 22)
         Me.mnuHelpContents.Text = "Contents"
+        Me.mnuHelpContents.Visible = False
         '
         'HelpProvider1
         '
         Me.HelpProvider1.HelpNamespace = "StarPlayerPC.chm"
-        '
-        'VideoToolStripMenuItem
-        '
-        Me.VideoToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SaveAndPlaybackToolStripMenuItem})
-        Me.VideoToolStripMenuItem.Name = "VideoToolStripMenuItem"
-        Me.VideoToolStripMenuItem.Size = New System.Drawing.Size(49, 20)
-        Me.VideoToolStripMenuItem.Text = "Video"
-        '
-        'SaveAndPlaybackToolStripMenuItem
-        '
-        Me.SaveAndPlaybackToolStripMenuItem.Name = "SaveAndPlaybackToolStripMenuItem"
-        Me.SaveAndPlaybackToolStripMenuItem.Size = New System.Drawing.Size(171, 22)
-        Me.SaveAndPlaybackToolStripMenuItem.Text = "Save and Playback"
         '
         'grdPlaylist
         '
         Me.grdPlaylist.AllowDrop = True
         Me.grdPlaylist.BackgroundColor = System.Drawing.SystemColors.Control
         Me.grdPlaylist.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize
-        Me.grdPlaylist.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TrackFilename, Me.TrackRepeat})
+        Me.grdPlaylist.Columns.AddRange(New System.Windows.Forms.DataGridViewColumn() {Me.TrackFilename, Me.TrackStart, Me.TrackEnd, Me.TrackRepeat})
+        Me.grdPlaylist.ContextMenuRowIndex = 0
         Me.grdPlaylist.Location = New System.Drawing.Point(0, 27)
         Me.grdPlaylist.Name = "grdPlaylist"
         Me.grdPlaylist.Size = New System.Drawing.Size(709, 359)
@@ -151,7 +163,20 @@ Partial Class frmEditor
         Me.TrackFilename.Name = "TrackFilename"
         Me.TrackFilename.ReadOnly = True
         Me.TrackFilename.Resizable = System.Windows.Forms.DataGridViewTriState.[False]
-        Me.TrackFilename.Width = 600
+        Me.TrackFilename.Width = 450
+        '
+        'TrackStart
+        '
+        Me.TrackStart.HeaderText = "Start"
+        Me.TrackStart.Name = "TrackStart"
+        Me.TrackStart.Width = 75
+        '
+        'TrackEnd
+        '
+        Me.TrackEnd.HeaderText = "End"
+        Me.TrackEnd.Name = "TrackEnd"
+        Me.TrackEnd.ToolTipText = "Leave empty to play to the end of the file"
+        Me.TrackEnd.Width = 75
         '
         'TrackRepeat
         '
@@ -161,6 +186,43 @@ Partial Class frmEditor
         Me.TrackRepeat.SortMode = System.Windows.Forms.DataGridViewColumnSortMode.Automatic
         Me.TrackRepeat.ToolTipText = "Repeat Track"
         Me.TrackRepeat.Width = 60
+        '
+        'mnuCellContext
+        '
+        Me.mnuCellContext.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuChooseVideo, Me.mnuRemoveRow, Me.mnuInsertNewRow})
+        Me.mnuCellContext.Name = "ContextMenuStrip1"
+        Me.mnuCellContext.Size = New System.Drawing.Size(166, 70)
+        '
+        'mnuChooseVideo
+        '
+        Me.mnuChooseVideo.Name = "mnuChooseVideo"
+        Me.mnuChooseVideo.Size = New System.Drawing.Size(165, 22)
+        Me.mnuChooseVideo.Text = "Choose video file"
+        '
+        'mnuRemoveRow
+        '
+        Me.mnuRemoveRow.Name = "mnuRemoveRow"
+        Me.mnuRemoveRow.Size = New System.Drawing.Size(165, 22)
+        Me.mnuRemoveRow.Text = "Remove row"
+        '
+        'mnuInsertNewRow
+        '
+        Me.mnuInsertNewRow.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.mnuInsertRowAbove, Me.mnuInsertRowBelow})
+        Me.mnuInsertNewRow.Name = "mnuInsertNewRow"
+        Me.mnuInsertNewRow.Size = New System.Drawing.Size(165, 22)
+        Me.mnuInsertNewRow.Text = "Insert new row"
+        '
+        'mnuInsertRowAbove
+        '
+        Me.mnuInsertRowAbove.Name = "mnuInsertRowAbove"
+        Me.mnuInsertRowAbove.Size = New System.Drawing.Size(161, 22)
+        Me.mnuInsertRowAbove.Text = "Insert row above"
+        '
+        'mnuInsertRowBelow
+        '
+        Me.mnuInsertRowBelow.Name = "mnuInsertRowBelow"
+        Me.mnuInsertRowBelow.Size = New System.Drawing.Size(161, 22)
+        Me.mnuInsertRowBelow.Text = "Insert row below"
         '
         'frmEditor
         '
@@ -176,6 +238,7 @@ Partial Class frmEditor
         Me.mnuMenuStrip.ResumeLayout(False)
         Me.mnuMenuStrip.PerformLayout()
         CType(Me.grdPlaylist, System.ComponentModel.ISupportInitialize).EndInit()
+        Me.mnuCellContext.ResumeLayout(False)
         Me.ResumeLayout(False)
         Me.PerformLayout()
 
@@ -193,9 +256,23 @@ Partial Class frmEditor
     Friend WithEvents mnuSettingsPreferences As ToolStripMenuItem
     Friend WithEvents mnuHelpContents As ToolStripMenuItem
     Friend WithEvents grdPlaylist As Playlist
-    Friend WithEvents TrackFilename As DataGridViewTextBoxColumn
-    Friend WithEvents TrackRepeat As DataGridViewCheckBoxColumn
     Friend WithEvents HelpProvider1 As HelpProvider
     Friend WithEvents VideoToolStripMenuItem As ToolStripMenuItem
     Friend WithEvents SaveAndPlaybackToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents mnuCellContext As ContextMenuStrip
+    Friend WithEvents ToolStripMenuItem1 As ToolStripMenuItem
+    Friend WithEvents RemoveRowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents InsertRowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents DuplicateRowToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents ToolStripMenuItem2 As ToolStripMenuItem
+    Friend WithEvents InsertRowAboveToolStripMenuItem As ToolStripMenuItem
+    Friend WithEvents mnuChooseVideo As ToolStripMenuItem
+    Friend WithEvents mnuRemoveRow As ToolStripMenuItem
+    Friend WithEvents mnuInsertNewRow As ToolStripMenuItem
+    Friend WithEvents mnuInsertRowBelow As ToolStripMenuItem
+    Friend WithEvents mnuInsertRowAbove As ToolStripMenuItem
+    Friend WithEvents TrackFilename As DataGridViewTextBoxColumn
+    Friend WithEvents TrackStart As DataGridViewTextBoxColumn
+    Friend WithEvents TrackEnd As DataGridViewTextBoxColumn
+    Friend WithEvents TrackRepeat As DataGridViewCheckBoxColumn
 End Class
