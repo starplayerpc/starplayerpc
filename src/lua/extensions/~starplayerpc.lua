@@ -4,12 +4,13 @@ https://github.com/starplayerpc/starplayerpc
 Copyright 2017
 
 Authors: Ian Edwards
+Version: 1.02
 
 --]]
 function descriptor()
   return {
-    title = "StarPlayerPC 1.0",
-    version = "1.0",
+    title = "StarPlayerPC",
+    version = "1.02",
     author = "isedwards",
     url = "https://github.com/starplayerpc/starplayerpc",
     shortdesc = "StarPlayerPC",
@@ -30,6 +31,7 @@ end
 
 -- Custom functions
 function set_repeat(repeat_track)
+  
   if repeat_track == nil then
     repeat_track = false
   elseif string.lower(repeat_track) == "repeat" then
@@ -41,20 +43,28 @@ function set_repeat(repeat_track)
   -- 'repeat_' (expects string, but does not respond to "repeat"/"repeat_one") therefore we'll toggle instead
   local player_mode = vlc.playlist.repeat_()
 
+  vlc.msg.dbg("[StarPlayerPC] set_repeat: " .. tostring(repeat_track) .. "(currently: " .. tostring(player_mode) .. ")")
+  
   if player_mode and not repeat_track then
-    vlc.msg.dbg("[StarPlayerPC] "..item:uri()..": continue")
+    -- if player_mode is currently true and repeat_track is false then toggle to false
+    -- vlc.msg.dbg("[StarPlayerPC] "..item:uri()..": continue")  -- no access to item here
     vlc.playlist.repeat_()
+    vlc.msg.dbg("[StarPlayerPC] set_repeat exit: repeat track should now be false")
+  
   elseif not player_mode and repeat_track then
-    vlc.msg.dbg("[StarPlayerPC] "..item:uri()..": repeat")
+    -- if player_mode is currently false and repeat_track is true then toggle to true
+    -- vlc.msg.dbg("[StarPlayerPC] "..item:uri()..": repeat")  -- no access to item here
     vlc.playlist.repeat_()
+    vlc.msg.dbg("[StarPlayerPC] set_repeat exit: repeat track should now be true")
   end
+  
 end
 
 function update_playback_mode()
   -- VLC lua error in file ../../extras/package/win32/../../../modules/lua/libs/video.c line 51 (function vlclua_fullscreen)
   -- previous error said 'string expected' when tried argument `true`
   -- vlc.video.fullscreen("fullscreen")
-  vlc.msg.dbg("[StarPlayerPC] Update playback mode running")
+  vlc.msg.dbg("[StarPlayerPC] update_playback_mode running")
   if vlc.input.is_playing() then
     vlc.msg.dbg("[StarPlayerPC] Input is playing")
 

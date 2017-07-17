@@ -78,13 +78,13 @@ Public Class Playlist
 
         Using reader As New FileIO.TextFieldParser(filename)
             reader.TextFieldType = FileIO.FieldType.Delimited
-            reader.SetDelimiters("|")
+            reader.SetDelimiters(My.Settings.playlistSeperator)
 
             Dim currentRow As String()
             While Not reader.EndOfData
                 Try
                     currentRow = reader.ReadFields()
-                    If currentRow.Length <> 4 Then
+                    If currentRow.Length <> 5 Then
                         MsgBox("Invalid playlist file")
                         Exit While
                     End If
@@ -160,7 +160,7 @@ Public Class Playlist
                     End If
                     filepath = row.Cells(0).Value.replace("\", "/")
                     filepath = filepath.Replace(" ", "%20")
-                    file.WriteLine("file:///" & filepath & sep & startTime & sep & endTime & sep & playmode)
+                    file.WriteLine("file:///" & filepath & sep & startTime & sep & endTime & sep & playmode & sep)
                 End If
             Next
         End Using
