@@ -38,21 +38,21 @@
     <ROW Directory="DesktopFolder" Directory_Parent="TARGETDIR" DefaultDir="DESKTO~1|DesktopFolder" IsPseudoRoot="1"/>
     <ROW Directory="InternetExplorer_Dir" Directory_Parent="Microsoft_Dir" DefaultDir="INTERN~1|Internet Explorer"/>
     <ROW Directory="Microsoft_Dir" Directory_Parent="AppDataFolder" DefaultDir="MICROS~1|Microsoft"/>
-    <ROW Directory="NewFolder_1_Dir" Directory_Parent="NewFolder_Dir" DefaultDir="VLC"/>
-    <ROW Directory="NewFolder_2_Dir" Directory_Parent="lua_Dir" DefaultDir="playlist"/>
-    <ROW Directory="NewFolder_Dir" Directory_Parent="ProgramFilesFolder" DefaultDir="VideoLAN"/>
     <ROW Directory="ProgramFiles64Folder" Directory_Parent="TARGETDIR" DefaultDir="PROGRA~2|ProgramFiles64Folder" IsPseudoRoot="1"/>
     <ROW Directory="ProgramFilesFolder" Directory_Parent="TARGETDIR" DefaultDir="PROGRA~1|ProgramFilesFolder" IsPseudoRoot="1"/>
     <ROW Directory="QuickLaunch_Dir" Directory_Parent="InternetExplorer_Dir" DefaultDir="QUICKL~1|Quick Launch"/>
     <ROW Directory="SHORTCUTDIR" Directory_Parent="TARGETDIR" DefaultDir="SHORTC~1|SHORTCUTDIR" IsPseudoRoot="1"/>
     <ROW Directory="StartMenuFolder" Directory_Parent="TARGETDIR" DefaultDir="STARTM~1|StartMenuFolder" IsPseudoRoot="1"/>
     <ROW Directory="TARGETDIR" DefaultDir="SourceDir"/>
+    <ROW Directory="VLC_1_Dir" Directory_Parent="ProgramFilesFolder" DefaultDir="VideoLAN"/>
+    <ROW Directory="VLC_2_Dir" Directory_Parent="VLC_1_Dir" DefaultDir="VLC"/>
     <ROW Directory="VLC_Dir" Directory_Parent="VideoLAN_Dir" DefaultDir="VLC"/>
     <ROW Directory="VideoLAN_Dir" Directory_Parent="ProgramFiles64Folder" DefaultDir="VideoLAN"/>
     <ROW Directory="extensions_1_Dir" Directory_Parent="lua_1_Dir" DefaultDir="EXTENS~1|extensions"/>
     <ROW Directory="extensions_Dir" Directory_Parent="lua_Dir" DefaultDir="EXTENS~1|extensions"/>
     <ROW Directory="lua_1_Dir" Directory_Parent="VLC_Dir" DefaultDir="lua"/>
-    <ROW Directory="lua_Dir" Directory_Parent="NewFolder_1_Dir" DefaultDir="lua"/>
+    <ROW Directory="lua_Dir" Directory_Parent="VLC_2_Dir" DefaultDir="lua"/>
+    <ROW Directory="playlist_1_Dir" Directory_Parent="lua_Dir" DefaultDir="playlist"/>
     <ROW Directory="playlist_Dir" Directory_Parent="lua_1_Dir" DefaultDir="playlist"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiCompsComponent">
@@ -63,8 +63,8 @@
     <ROW Component="StarPlayerPC.exe" ComponentId="{57D37466-6829-485D-A8FB-AF17CC97A6E9}" Directory_="APPDIR" Attributes="0" KeyPath="StarPlayerPC.exe"/>
     <ROW Component="sppblck.png" ComponentId="{8E41977A-0459-43B7-A4DC-DB4BEE93A98A}" Directory_="APPDIR" Attributes="0" KeyPath="sppblck.png" Type="0"/>
     <ROW Component="starplayerpc.lua" ComponentId="{FC1130EF-3313-4262-826E-303BA3E2524D}" Directory_="playlist_Dir" Attributes="0" KeyPath="starplayerpc.lua_1" Type="0"/>
-    <ROW Component="starplayerpc.lua_1" ComponentId="{241ED8C2-05EA-4413-B983-73B35E81A234}" Directory_="extensions_Dir" Attributes="0" KeyPath="starplayerpc.lua_2" Type="0"/>
-    <ROW Component="starplayerpc.lua_2" ComponentId="{0C0B089D-EAD2-4CE1-B59B-E627C0198088}" Directory_="NewFolder_2_Dir" Attributes="0" KeyPath="starplayerpc.lua_3" Type="0"/>
+    <ROW Component="starplayerpc.lua_1" ComponentId="{0E855D3E-294A-438D-B35E-B08777FDAB76}" Directory_="extensions_Dir" Attributes="0" KeyPath="starplayerpc.lua_2" Type="0"/>
+    <ROW Component="starplayerpc.lua_2" ComponentId="{C4A25D5F-7350-4B7F-9CEA-BCAAAE9BB438}" Directory_="playlist_1_Dir" Attributes="0" KeyPath="starplayerpc.lua_3" Type="0"/>
     <ROW Component="starplayerpc.lua_3" ComponentId="{7B26FABF-1D90-4FDC-B10F-8866A0452540}" Directory_="extensions_1_Dir" Attributes="0" KeyPath="starplayerpc.lua" Type="0"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.MsiFeatsComponent">

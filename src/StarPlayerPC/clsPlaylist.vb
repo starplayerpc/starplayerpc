@@ -88,7 +88,15 @@ Public Class Playlist
                         MsgBox("Invalid playlist file")
                         Exit While
                     End If
+
                     Dim item As New PlaylistItem
+                    item.Filename = currentRow(0)
+
+                    If item.Filename.Contains("sppmain.png") OrElse item.Filename.Contains("sppblck.png") Then
+                        ' Don't show the splash screen and black background images in our playlist editor
+                        Continue While
+                    End If
+
                     item.Filename = currentRow(0).Replace("file:///", "").Replace("/", "\")
                     item.Filename = item.Filename.Replace("%20", " ")
                     item.StartTime = currentRow(1)
@@ -149,6 +157,15 @@ Public Class Playlist
         Dim utf8WithoutBom As New System.Text.UTF8Encoding(False)
 
         Using file As New IO.StreamWriter(filename, False, utf8WithoutBom)
+            ' Add the splash screen and black screen images first
+            filepath = Application.StartupPath() + "\sppmain.png"
+            filepath = filepath.Replace("\", "/").Replace(" ", "%20")
+            file.WriteLine("file:///" & filepath & sep & sep & sep & "repeat" & sep)
+
+            filepath = Application.StartupPath() + "\sppblck.png"
+            filepath = filepath.Replace("\", "/").Replace(" ", "%20")
+            file.WriteLine("file:///" & filepath & sep & sep & sep & "repeat" & sep)
+
             For Each row As DataGridViewRow In Rows
                 If row.Cells(0).Value <> "" Then
                     startTime = row.Cells(1).EditedFormattedValue
@@ -163,6 +180,12 @@ Public Class Playlist
                     file.WriteLine("file:///" & filepath & sep & startTime & sep & endTime & sep & playmode & sep)
                 End If
             Next
+
+            ' End with the black screen image
+            filepath = Application.StartupPath() + "\sppblck.png"
+            filepath = filepath.Replace("\", "/").Replace(" ", "%20")
+            file.WriteLine("file:///" & filepath & sep & sep & sep & "repeat" & sep)
+
         End Using
     End Sub
 

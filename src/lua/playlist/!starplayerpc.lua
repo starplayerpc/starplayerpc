@@ -19,15 +19,6 @@ end
 function parse()
     playlist = {}
 
-    playlist_item = {}
-    playlist_item.path = "file:///C:/Program%20Files/StarPlayerPC/sppmain.png"
-    playlist_item.meta = { ["Playback mode"] = "repeat" }
-    table.insert( playlist, playlist_item )
-    playlist_item = {}
-    playlist_item.path = "file:///C:/Program%20Files/StarPlayerPC/sppblck.png"
-    playlist_item.meta = { ["Playback mode"] = "repeat" }
-    table.insert( playlist, playlist_item )
-
     while true do
         playlist_item = {}
         line = vlc.readline()
@@ -58,11 +49,6 @@ function parse()
         -- add the item to the playlist
         table.insert( playlist, playlist_item )
     end
-
-    playlist_item = {}
-    playlist_item.path = "file:///C:/Program%20Files/StarPlayerPC/sppblck.png"
-    playlist_item.meta = { ["Playback mode"] = "repeat" }
-    table.insert( playlist, playlist_item )
 
     return playlist
 end
