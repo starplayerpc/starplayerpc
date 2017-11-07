@@ -191,27 +191,13 @@ Public Class Playlist
 
     Public Sub BeginPlayback(filename As String)
         Dim args As String
-        Dim keySequences() As String
-        ' We use sendkeys to enable the StarPlayerPC VLC Lua extension once VLC has started.
-        ' There is no direct key combination to enable a custom extension, so we ensure that
-        ' our extension will be the final item on the View menu (by using the filename
-        ' ~starplayerpc.lua) and send the keys Alt-i, Up, Enter.
-        ' We send Enter first (and delay) to clear any initially notification that may remain
-        ' and also give time for the StarPlayerPC extention to be loaded into the view menu.
-        ' To begin playback we need to play twice (the first time enters the playlist, and
-        ' the second begins playing the playlist). The VLC key to play does not expand the
-        ' playlist, therefore we send ' ' (space) twice and hope the user has not reassigned
-        ' this key. Before space works, we need to tab to give the playlist panel the focus.
-        ' Finally we send 'f' to enter fullscreen.
-        keySequences = {"~", "%i{UP}~{TAB}", " ", " ", "f"}
-
-        ' Extensions cannot be enabled during playback, therefore we lauch VLC with --no-playlist-autostart.
+        ' Firstly we enable our custom extension using VLC's new --lua-extension-list option (v3.0+?)
         ' We set our own keys for Next and Back (and change Esc from exiting fullscreen to exiting VLC).
         ' Note that fullscreen can still be toggled using the 'f' key, even though Esc no longer leaves fullscreen.
-        ' We also set the the toggle fullscreen key to the VLC default (f) to ensure that our sendkeys works correctly
+        ' We also set the the toggle fullscreen key to the VLC default (f)
         ' and set the mouse hide timeout to 0 ms to ensure the mouse pointer is not shown during playback
         ' Finally we set aspect ratio to the required 16:9, disable onscreen notifications and turn off messages (-q)
-        args = "--no-playlist-autostart "
+        args = "--lua-extension-list=StarPlayerPC --fullscreen "
         args &= "--key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
         args &= "--key-toggle-fullscreen f --mouse-hide-timeout=0 "
         args &= "--aspect-ratio=16:9 --qt-notification=0 --no-qt-bgcone --no-qt-updates-notif --no-osd --no-qt-fs-controller -q "
@@ -223,11 +209,6 @@ Public Class Playlist
                     vlc.StartInfo = pi
                     vlc.Start()
                     SetForegroundWindow(vlc.MainWindowHandle)
-                    vlc.WaitForInputIdle()
-                    For Each keys In keySequences
-                        System.Threading.Thread.Sleep(500)
-                        SendKeys.SendWait(keys)
-                    Next
                 End Using
                 Exit For
             Catch ex As Exception

@@ -293,7 +293,7 @@
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqComponent">
     <ROW PrereqKey="C8B23E544BA99E5809B4D984F750" DisplayName=".NET Framework 4.7" SetupFileUrl="https://download.microsoft.com/download/D/D/3/DD35CC25-6E9C-484B-A746-C5BE0C923290/NDP47-KB3186497-x86-x64-AllOS-ENU.exe" Location="1" ExactSize="61586744" WinNTVersions="Windows XP SP3 x86, Windows Server 2003 SP2 x86, Windows Vista x86, Windows Server 2008 x86, Windows 7 RTM x86, Windows 10 version 1507 x86, Windows 10 version 1511 x86, Windows 10 version 1703 x86" WinNT64Versions="Windows XP SP2 x64, Windows Server 2003 SP2 x64, Windows Vista x64, Windows Server 2008 x64, Windows 7 RTM x64, Windows Server 2008 R2 RTM x64, Windows 10 version 1507 x64, Windows 10 version 1511 x64, Windows 10 version 1703 x64" Operator="1" ComLine="/qb" BasicUiComLine="/qb" NoUiComLine="/qb" Options="xy" MD5="b59040e489bff55433508438627d11e6" TargetName=".NET Framework 4.7"/>
-    <ROW PrereqKey="VLCMediaPlayer" DisplayName="VLC Media Player" VersionMin="2.2.4" VersionMax="2.2.4" SetupFileUrl="..\..\..\vlc-2.2.4-win32.exe" Location="0" ExactSize="0" Operator="1" ComLine="/L=1033 /S" BasicUiComLine="/L=1033 /S" NoUiComLine="/L=1033 /S" Options="imy" TargetName="vlc-2.2.4-win32.exe"/>
+    <ROW PrereqKey="VLCMediaPlayer" DisplayName="VLC Media Player" VersionMin="3.0.0" VersionMax="3.0.0" SetupFileUrl="..\..\..\vlc-3.0.0-git+autoloadlua-win32.exe" Location="0" ExactSize="0" Operator="1" ComLine="/L=1033 /S" BasicUiComLine="/L=1033 /S" NoUiComLine="/L=1033 /S" Options="imy" TargetName="vlc-3.0.0-git+autoloadlua-win32.exe"/>
     <ATTRIBUTE name="PrereqsOrder" value="C8B23E544BA99E5809B4D984F750 VLCMediaPlayer"/>
   </COMPONENT>
   <COMPONENT cid="caphyon.advinst.msicomp.PreReqSearchComponent">
