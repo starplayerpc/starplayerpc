@@ -206,7 +206,6 @@ Public Class Playlist
 
         For Each vlcpath As String In Split(My.Settings.vlcPath, "|")
             Try
-                MsgBox("Launching: " & vlcpath & args & """" & filename & """")
                 Dim pi As New ProcessStartInfo(vlcpath, args & """" & filename & """")
                 Using vlc As New Process
                     vlc.StartInfo = pi

@@ -1,10 +1,7 @@
 ###################
 ## CUSTOM IGNORE ##
 ###################
-
-# Sphinx built docs
-docs/build
-
+starplayerpc_setup-cache/
 
 #########################
 ## LUA STANDARD IGNORE ##
