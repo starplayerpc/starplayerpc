@@ -191,7 +191,7 @@ Public Class Playlist
 
     Public Sub BeginPlayback(filename As String)
         Dim args As String
-        ' Firstly we enable our custom extension using VLC's new --lua-extension-list option (v3.0+?)
+        ' Firstly we enable our custom extension using a custom build of VLC with a new `--lua-extension-list` option
         ' We set our own keys for Next and Back (and change Esc from exiting fullscreen to exiting VLC).
         ' Note that fullscreen can still be toggled using the 'f' key, even though Esc no longer leaves fullscreen.
         ' We also set the the toggle fullscreen key to the VLC default (f)
@@ -200,10 +200,13 @@ Public Class Playlist
         args = "--lua-extension-list=StarPlayerPC --fullscreen "
         args &= "--key-next ""Page Down"" --key-prev ""Page Up"" --key-leave-fullscreen Unset --key-quit Esc "
         args &= "--key-toggle-fullscreen f --mouse-hide-timeout=0 "
-        args &= "--aspect-ratio=16:9 --qt-notification=0 --no-qt-bgcone --no-qt-updates-notif --no-osd --no-qt-fs-controller -q "
+        args &= "--aspect-ratio=16:9 --qt-notification=0 --no-qt-bgcone --no-qt-privacy-ask --no-osd --no-qt-fs-controller -q "
+        ' Disabled: this argument is not working in VLC 3+
+        ' args &= " --no-qt-updates-notif "
 
         For Each vlcpath As String In Split(My.Settings.vlcPath, "|")
             Try
+                MsgBox("Launching: " & vlcpath & args & """" & filename & """")
                 Dim pi As New ProcessStartInfo(vlcpath, args & """" & filename & """")
                 Using vlc As New Process
                     vlc.StartInfo = pi
